@@ -1,8 +1,5 @@
 import sqlite3
-import json, pathlib, os, ast
-
-
-
+import json, pathlib, os
 
 class DatabaseManagement:
     """Manages and Create databases"""
@@ -12,8 +9,9 @@ class DatabaseManagement:
         
         db_name     --> is the name of the database that will be created
         dataType    --> data type supposed to be stored by the data_list parameter
-        data_2Dlist --> List of data 
+        data_list --> List of data 
         """
+        print("HELLOC")
         if pathlib.Path('databases/'+str(db_name)+'.db').exists():
             os.remove('databases/'+str(db_name)+'.db')
         self.myData = data_list # list of data
@@ -22,6 +20,8 @@ class DatabaseManagement:
         
         #Create a cursor object
         self.cursor = self.conn.cursor()
+
+        self.conn.close()
 
         self.createTable()
 
@@ -40,7 +40,7 @@ class DatabaseManagement:
             i += 1
 
         twoDlist = [x_vals,y_vals] #list of the values stored in self.myData but stored in 2D
-        
+
         self.storeToDB(twoDlist)
 
 
@@ -69,12 +69,7 @@ class DatabaseManagement:
 
         cursor.execute("SELECT json_data FROM data")
         rows = cursor.fetchall()
-    
-        xy  = ast.literal_eval(rows[0][0]) 
-        print(xy[0][1])
+        
+        print(rows[0][0])
 
         conn.close()
-
-data = ["x,y", "1,2", "3,4"]
-k =DatabaseManagement(data, "dataPoints")
-k.printData()
