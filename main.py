@@ -3,14 +3,16 @@ from FrontPage import *
 from DBMS import *
 from PolynomialInterpolation import *
 import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 
 
 class Application:
+    
 
     def __init__(self):
         """Initialize the entire application"""
-
+        self.destroy_frame = False
         self.root = Tk()
         self.root.title("Polynomial Interpolation DBMS")
 
@@ -18,7 +20,8 @@ class Application:
         self.addFrontPageButtons()
 
         self.root.mainloop()
-
+        
+        
 
     def addFrontPageButtons(self):
         
@@ -89,6 +92,7 @@ class Application:
         self.canvas1.create_window(200,100, window= self.inputGuide)
 
         #Create a button to retrieve the input
+        self.destroy_frame = True
         self.submitButton = Button(self.canvas1, text="Submit Data", command=self.storeData)
         self.canvas1.create_window(225,550, window=self.submitButton)
 
@@ -108,21 +112,60 @@ class Application:
     def performInterpolation(self):
         k = LagrangePolynomial()
         polynomialDataPoints = k.generateDataPoints(-2,0.5, 100)
-
-        #Show data graph
+        
         x_values = [point[0] for point in polynomialDataPoints]
         y_values = [point[1] for point in polynomialDataPoints]
 
-        plt.plot(x_values,y_values)
-        xlabel, ylabel = self.Data[0].split(",")
-        plt.xlabel(xlabel)
-        plt.ylabel(ylabel)
+        self.tempData = [x_values, y_values] # calculated data temporarly stored | will be permanetely stored when the user wants to
 
-        plt.title(str(ylabel)+" vs "+str(xlabel))
+        fig, ax = plt.subplots()
+        ax.plot(x_values,y_values)
+        ax.set_title("Example Graph")
+        
+        if self.destroy_frame:
+            self.frame.destroy()
+            self.frame = Frame(self.root, width=450, height= 600)
+            self.frame.grid(row=0,column=1)
 
-        plt.grid(True)
-        plt.show()
+        #embed the graph to frame
+        canvas = FigureCanvasTkAgg(fig, master=self.frame)
+        canvas.draw()
+        canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=True)
 
+        #define button for saving the data
+        saveButton = Button(self.canvas1, text="Save Data", command= self.saveData)
+        self.canvas1.create_window(230,450, window=saveButton)
+
+    def saveData(self):
+            
+            #first clean the LEFT PANE of the program
+            self.frame.destroy()
+            self.frame = Frame(self.root, width=450, height= 600)
+            self.frame.grid_propagate(False)
+            self.frame.grid(row=0,column=1)
+
+            #Now ask the user the name of the table they want to save
+            name_prompt = Label(self.frame, text="INSERT A UNIQUE NAME FOR THE TABLE")
+            name_prompt.grid(row=0, column=0)
+
+            # ADD an entry field and a button to confirm the name
+            self.table_name = Entry(self.frame)
+            self.table_name.grid(row=1,column=0)
+
+            confirm_button = Button(self.frame, text="confirm name", command = self.storeToDB)
+            confirm_button.grid(row=2, column=0)
+
+            # Configure the frame's grid to prevent resizing
+            self.frame.grid_rowconfigure(0, weight=1)
+            self.frame.grid_columnconfigure(0, weight=1)
+    
+    def storeToDB(self):
+        tempdata = [] #stores tuple (x,y)
+
+        for i in range(len(self.tempData[0])):
+            tempdata.append((self.tempData[0][i], self.tempData[1][i]))
+
+        DatabaseManagement.saveToDatabase(self.table_name.get(), tempdata)
 
     def clean_window(self):
         #delete all widgets
