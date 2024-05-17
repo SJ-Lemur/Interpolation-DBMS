@@ -11,7 +11,6 @@ class DatabaseManagement:
         dataType    --> data type supposed to be stored by the data_list parameter
         data_list --> List of data 
         """
-        print("HELLOC")
         if pathlib.Path('databases/'+str(db_name)+'.db').exists():
             os.remove('databases/'+str(db_name)+'.db')
         self.myData = data_list # list of data
@@ -20,9 +19,6 @@ class DatabaseManagement:
         
         #Create a cursor object
         self.cursor = self.conn.cursor()
-
-        self.conn.close()
-
         self.createTable()
 
     
@@ -62,6 +58,22 @@ class DatabaseManagement:
 
         #close the connection
         self.conn.close()
+    
+    @staticmethod
+    def saveToDatabase(table_name, arr):
+        """saves the data stored in arr with table name = table_name to database called ALLDATA"""
+        
+        conn = sqlite3.connect("databases/ALLDATA.db")
+        cursor = conn.cursor()
+
+        cursor.execute(f"CREATE TABLE IF NOT EXISTS {table_name} ( x INTEGER NOT NULL, y INTEGER NOT NULL )")  
+
+        #insert data into the table
+        cursor.executemany("INSERT INTO "+str(table_name)+" (x, y) VALUES (?, ?)",arr)
+
+        #commit the change and close the connection
+        conn.commit()
+        conn.close()          
 
     def printData(self):
         conn = sqlite3.connect('databases/dataPoints.db')
@@ -69,7 +81,5 @@ class DatabaseManagement:
 
         cursor.execute("SELECT json_data FROM data")
         rows = cursor.fetchall()
-        
-        print(rows[0][0])
 
         conn.close()
