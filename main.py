@@ -4,6 +4,7 @@ from DBMS import *
 from PolynomialInterpolation import *
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from DescriptionPage import *
 
 
 
@@ -27,7 +28,7 @@ class Application:
         
         Button(self.root, text="Show Data Record",padx=50).grid(row=1, column= 1)
         Button(self.root, text="Input Data",padx=50, command= self.show_input_data_options).grid(row=1, column= 3)
-        Button(self.root, text="Show Interpolation Example",padx=50).grid(row=1, column =5)
+        Button(self.root, text="Show Interpolation Example", command= self.showInterpolationExample ,padx=50).grid(row=1, column =5)
     
     def show_input_data_options(self):
         """displays the options a user would like to use to input data"""
@@ -167,6 +168,17 @@ class Application:
 
         DatabaseManagement.saveToDatabase(self.table_name.get(), tempdata)
 
+        self.frame.destroy()
+        self.frame = Frame(self.root, width=450, height= 600)
+        self.frame.grid(row=0,column=1)
+    
+
+    def showInterpolationExample(self):
+        self.clean_window()
+        PolynomialInterpolationPage(self.root)
+        self.root.geometry("900x605")
+
+        #display the html page
     def clean_window(self):
         #delete all widgets
         self.root.after(0)
