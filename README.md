@@ -11,4 +11,4 @@ TO PROPERLY RUN THE PROGRAM DO THE FOLLOWING:
 3. create folders with name textFile and databases
 
 
-PRESS 'ESC' to back to the FrontPage
+PRESS 'ESC' to move back to the FrontPage
