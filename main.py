@@ -20,6 +20,9 @@ class Application:
         RunFrontPage(self.root)
         self.addFrontPageButtons()
 
+        #bind the key
+        self.root.bind('<Escape>', self.go_back_to_front_page)
+
         self.root.mainloop()
         
         
@@ -39,8 +42,6 @@ class Application:
         self.canvas1.grid(row=0, column=0)
 
         self.frame = Frame(self.root, width=450, height= 600)
-        #self.canvas2 = Canvas(self.root, width=450, height=600, bg = "Alice blue")
-        #self.canvas2.grid(row=0, column=1)
         self.frame.grid(row=0,column=1)
 
         self.addButtonOptions()
@@ -84,6 +85,7 @@ class Application:
         """Creates entry field built using the Text widget"""
         """The user is expected to insert data in csv format"""
         self.show_input_data_options()
+
         
         self.input_field = Text(self.frame, wrap="word", height =35, width = 60)
         self.input_field.grid(row=0,column=0)
@@ -182,9 +184,20 @@ class Application:
         #display the html page
     def clean_window(self):
         #delete all widgets
-        self.root.after(0)
+        #self.root.after(0)
         for widget in self.root.winfo_children():
             widget.destroy()
+        
+        self.root.configure(bg='#fff')
+        self.root.update_idletasks()  # Make sure all pending tasks are complete
+        self.root.geometry("")
+
+
+    def go_back_to_front_page(self, event):
+        self.clean_window()
+        RunFrontPage(self.root)
+        self.addFrontPageButtons()
+
 
 
 
