@@ -61,6 +61,7 @@ class Application:
         self.canvas1.create_window(50,10, window=label)
 
     def readCSV_file(self):
+        self.show_input_data_options()
         self.filenameInputield = Entry(self.frame)
         self.filenameInputield.pack(fill=BOTH, expand=True)
         self.filenameInputield.place(x=int(150), y= int(250))
@@ -82,7 +83,7 @@ class Application:
     def inputDataField(self):
         """Creates entry field built using the Text widget"""
         """The user is expected to insert data in csv format"""
-
+        self.show_input_data_options()
         
         self.input_field = Text(self.frame, wrap="word", height =35, width = 60)
         self.input_field.grid(row=0,column=0)
