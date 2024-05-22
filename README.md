@@ -9,3 +9,6 @@ TO PROPERLY RUN THE PROGRAM DO THE FOLLOWING:
 1. All files currently in the repository should be in the same folder
 2. extract a zip file, create a folder with the same name as the zip file then move its contents to that folder
 3. create folders with name textFile and databases
+
+
+PRESS 'ESC' to back to the FrontPage
