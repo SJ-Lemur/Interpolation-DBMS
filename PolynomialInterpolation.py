@@ -45,18 +45,19 @@ class LagrangePolynomial:
 
         return round(y,3)
     
-    def generateDataPoints(self,x_init,h,n):
+    def generateDataPoints(self):
         """returns list of tuples of length 2 
          
          x_init  --> start of the interval
          h       --> stepsize
          n       --> total number of points to be generated"""
         
-        points = []
-        x = x_init
-        for i in range(n):
-            points.append((x, self.lagrange_interpolate_value(x)))
-            x += h
+        sorted_points = sorted(self.DataPoints)
+        new_points = []
+        x = sorted_points[0][0]
+
+        while x <= sorted_points[-1][0]:
+            new_points.append((x, self.lagrange_interpolate_value(x)))
+            x += 0.05
         
-        return points
-    
+        return new_points
