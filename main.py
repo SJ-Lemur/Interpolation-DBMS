@@ -115,7 +115,7 @@ class Application:
 
     def performInterpolation(self):
         k = LagrangePolynomial()
-        polynomialDataPoints = k.generateDataPoints(-2,0.5, 100)
+        polynomialDataPoints = k.generateDataPoints()
         
         x_values = [point[0] for point in polynomialDataPoints]
         y_values = [point[1] for point in polynomialDataPoints]
@@ -197,6 +197,7 @@ class Application:
         self.clean_window()
         RunFrontPage(self.root)
         self.addFrontPageButtons()
+
 
 
 
