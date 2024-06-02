@@ -5,6 +5,7 @@ from PolynomialInterpolation import *
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from DescriptionPage import *
+from Database_display import *
 
 
 
@@ -29,7 +30,7 @@ class Application:
 
     def addFrontPageButtons(self):
         
-        Button(self.root, text="Show Data Record",padx=50).grid(row=1, column= 1)
+        Button(self.root, text="Show Data Record",padx=50, command=self.display_data).grid(row=1, column= 1)
         Button(self.root, text="Input Data",padx=50, command= self.show_input_data_options).grid(row=1, column= 3)
         Button(self.root, text="Show Interpolation Example", command= self.showInterpolationExample ,padx=50).grid(row=1, column =5)
     
@@ -197,7 +198,10 @@ class Application:
         self.clean_window()
         RunFrontPage(self.root)
         self.addFrontPageButtons()
+        
 
+    def display_data(self):
+        DisplayData(self.root)
 
 
 
